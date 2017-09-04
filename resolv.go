@@ -25,6 +25,7 @@ func search(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	searchTerm := vars["searchTerm"]
 	k, t := splitSearchTerm(searchTerm)
+	tSize := strings.Count(t, "")
 	url, err := getUrl(k)
 	if err != nil {
 		panic(err)
@@ -33,8 +34,10 @@ func search(w http.ResponseWriter, r *http.Request) {
 	buf.WriteString("https://")
 	buf.WriteString(d)
 	buf.WriteString("/")
-	buf.WriteString(sd)
-	buf.WriteString(t)
+	if tSize != 1 {
+		buf.WriteString(sd)
+		buf.WriteString(t)
+	}
 	url = buf.String()
 	http.Redirect(w, r, url, 302)
 	log.Println("db returned: ", url)
@@ -61,6 +64,6 @@ func splitSearchTerm(searchTerm string) (string, string) {
 		term = splits[1]
 		return keyword, term
 	} else {
-		return keyword, ""
+		return searchTerm, ""
 	}
 }

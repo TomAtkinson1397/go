@@ -8,7 +8,7 @@ import (
 var val []byte
 
 func getUrl(keyword string) (string, error) {
-	db, err := bolt.Open("/home/tom/go/src/github.com/tomatkinson1397/goresolv/keywords.db", 0644, nil)
+	db, err := bolt.Open("/home/tom/go/keywords.db", 0644, nil)
 	logErr(err)
 	defer db.Close()
 
